@@ -1,17 +1,7 @@
 'use strict';
 //统计商品
 function calculation(barcodeArray) {
-    const s = new Set()
-    let temp = barcodeArray.concat()
-    for(var i = 0; i <temp.length;i++){
-        if(temp[i].includes('-')){
-            let index = temp[i].indexOf('-')
-            temp[i] = temp[i].substring(0,index)
-        }
-    }
-
-    temp.forEach(x => s.add(x));
-    let uniqueArray = [...s]
+    let uniqueArray = unique(barcodeArray)
     let resultArray = []
     for (let i = 0; i < uniqueArray.length; i++) {
         let itemObj = {
@@ -31,6 +21,20 @@ function calculation(barcodeArray) {
         resultArray.push(itemObj)
     }
     return resultArray
+}
+// 数组去重
+function unique(Array){
+    const s = new Set()
+    let tempArray = Array.concat()
+    for(var i = 0; i <tempArray.length;i++){
+        if(tempArray[i].includes('-')){
+            let index = tempArray[i].indexOf('-')
+            tempArray[i] = tempArray[i].substring(0,index)
+        }
+    }
+    tempArray.forEach(x => s.add(x));
+    let uniqueArray = [...s]
+    return uniqueArray
 }
 //生成商品列表清单
 function matchProductInfo(calculationArray, getAllGoodsFunc){
@@ -74,6 +78,7 @@ function totalMoney(productList, key){ // key:0,表示计算折扣价格，key�
     }
     return sum
 }
+// 输出清单函数
 function printReceipt(productArray){
     let calculationArray = calculation(productArray) // 统计后的数组
     let goodsList = matchProductInfo(calculationArray,loadAllItems) // 信息匹配和计算总价后的数组
