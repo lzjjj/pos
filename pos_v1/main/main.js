@@ -1,5 +1,5 @@
 'use strict';
-//统计商品 
+//统计商品
 function calculation(barcodeArray) {
     let uniqueArray = unique(barcodeArray)
     let resultArray = []
@@ -57,7 +57,7 @@ function countItemSum(itemObj, loadPromotions,key){ // key:0,表示计算折扣�
     let productSum = 0
     if(key ===0){
         if (PromotionsArray.indexOf(itemObj.barcode) > -1){
-            productSum = parseInt(itemObj.num/3*2+itemObj.num % 3) * itemObj.price
+            productSum = (parseInt(itemObj.num/3)*2 + itemObj.num % 3) * itemObj.price
         } else {
             productSum = itemObj.num * itemObj.price
         }
