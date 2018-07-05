@@ -80,12 +80,15 @@ function totalMoney(productList, key){ // key:0,表示计算折扣价格，key�
 }
 // 生成清单信息
     function buildReceiptMsg(goodsList,discountTotalMoney,saveMoney){
-        let receiptMsg = '***<没钱赚商店>收据***\n'
+        let receiptListInfo = ''
         for(let obj of goodsList) {
-            receiptMsg = receiptMsg + '名称：'+ obj.name +'，数量：'+ obj.num + obj.unit +'，单价：' + obj.price.toFixed(2) +'(元)，小计：' + obj.productDiscoultSum.toFixed(2)+ '(元)\n'
+            receiptListInfo = receiptListInfo + `\n  名称：${obj.name}，数量：${obj.num}${obj.unit}，单价：${obj.price.toFixed(2)}(元)，小计：${obj.productDiscoultSum.toFixed(2)}(元)`
         }
-        receiptMsg = receiptMsg + 
-       '----------------------\n总计：'+discountTotalMoney.toFixed(2) +'(元)\n节省：' + saveMoney.toFixed(2) + '(元)\n**********************'
+        let receiptMsg = `***<没钱赚商店>收据***${receiptListInfo}
+  ----------------------
+  总计：${discountTotalMoney.toFixed(2)}(元)
+  节省：${saveMoney.toFixed(2)}(元)
+  **********************`
         return receiptMsg
     }
 // 输出清单函数
@@ -96,5 +99,6 @@ function printReceipt(productArray){
     let discountTotalMoney = totalMoney(goodsList, 0) //计算打折总价格
     let saveMoney = normalTotalMoney - discountTotalMoney // 打折后的价格
     let receiptMsg = buildReceiptMsg(goodsList,discountTotalMoney,saveMoney) // 生成清单信息
+    console.info(receiptMsg)
     console.log(receiptMsg)
 }
