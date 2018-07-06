@@ -5,7 +5,7 @@ function calculation(barcodeArray) {
     let resultArray = []
     for (let i = 0; i < uniqueArray.length; i++) {
         let itemObj = {
-            barcode:uniqueArray[i],
+            barcode:uniqueArray[i], 
             num:0
         }
         for (let j = 0; j < barcodeArray.length; j++) {
@@ -57,7 +57,7 @@ function countItemSum(itemObj, loadPromotions,key){ // key:0,表示计算折扣�
     let productSum = 0
     if(key ===0){
         if (PromotionsArray.indexOf(itemObj.barcode) > -1){
-            productSum = (parseInt(itemObj.num/3)*2 + itemObj.num % 3) * itemObj.price
+            productSum = (itemObj.num - parseInt(itemObj.num/3)) * itemObj.price
         } else {
             productSum = itemObj.num * itemObj.price
         }
