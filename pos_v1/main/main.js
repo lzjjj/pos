@@ -102,3 +102,4 @@ function printReceipt(productArray){
     console.info(receiptMsg)
     console.log(receiptMsg)
 }
+ 
