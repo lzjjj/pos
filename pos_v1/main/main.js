@@ -89,7 +89,7 @@ function totalMoney(productList, key){ // key:0,表示计算折扣价格，key�
   总计：${discountTotalMoney.toFixed(2)}(元)
   节省：${saveMoney.toFixed(2)}(元)
   **********************`
-        return receiptMsg 
+        return receiptMsg
     }
 // 输出清单函数
 function printReceipt(productArray){
