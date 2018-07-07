@@ -53,30 +53,6 @@ function loadPromotions() {
     }
   ];
 }
-
-//统计商品
-function calculation(barcodeArray) {
-    let uniqueArray = unique(barcodeArray)
-    let resultArray = []
-    for (let i = 0; i < uniqueArray.length; i++) {
-        let itemObj = {
-            barcode:uniqueArray[i], 
-            num:0
-        }
-        for (let j = 0; j < barcodeArray.length; j++) {
-            let index = barcodeArray[j].indexOf('-')
-            if(uniqueArray[i]===barcodeArray[j] || uniqueArray[i]===barcodeArray[j].substring(0,index)){
-                if(index > -1) {
-                    itemObj.num = itemObj.num + parseFloat(barcodeArray[j].substring(index+1))
-                } else {
-                    itemObj.num = itemObj.num + 1
-                }
-            }
-        }
-        resultArray.push(itemObj)
-    }
-    return resultArray
-}
 // 数组去重
 function unique(Array){
     const s = new Set()
@@ -91,17 +67,49 @@ function unique(Array){
     let uniqueArray = [...s]
     return uniqueArray
 }
+//获取单个商品个数
+function checkoutSameItem(goodsA,goodsListB){
+    let itemObj = {
+        barcode:goodsA, 
+        num:0
+    }
+    for (let j = 0; j < goodsListB.length; j++) {
+        let index = goodsListB[j].indexOf('-')
+        if(goodsA===goodsListB[j] || goodsA===goodsListB[j].substring(0,index)){
+            if(index > -1) {
+                itemObj.num = itemObj.num + parseFloat(goodsListB[j].substring(index+1))
+            } else {
+                itemObj.num = itemObj.num + 1
+            }
+        }
+    }
+    return itemObj
+}
+//统计商品
+function calculation(barcodeArray) {
+    let uniqueArray = unique(barcodeArray)
+    let resultArray = []
+    for (let i = 0; i < uniqueArray.length; i++) {
+        let itemObj = checkoutSameItem(uniqueArray[i],barcodeArray)
+        resultArray.push(itemObj)
+    }
+    return resultArray
+}
+//生成单个商品信息
+function GenerateAProductInfo(goodsItemA,AllGoodsList){
+    for(let j of AllGoodsList){
+        if(goodsItemA.barcode === j.barcode) {
+            goodsItemA = Object.assign(goodsItemA,j);
+            goodsItemA.productDiscoultSum = countItemSum(goodsItemA,0)
+            goodsItemA.productNormalSum = countItemSum(goodsItemA,1)
+        }
+    }
+}
 //生成商品列表清单
 function matchProductInfo(calculationArray){
     let AllGoodsList = loadAllItems()
     for(let i of calculationArray){
-        for(let j of AllGoodsList){
-            if(i.barcode === j.barcode) {
-                i = Object.assign(i,j);
-                i.productDiscoultSum = countItemSum(i,0)
-                i.productNormalSum = countItemSum(i,1)
-            }
-        }
+        GenerateAProductInfo(i,AllGoodsList)
     }
     return calculationArray
 }
